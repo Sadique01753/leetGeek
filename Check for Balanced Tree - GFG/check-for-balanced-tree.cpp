@@ -116,25 +116,60 @@ class Solution{
         return max(leftHeight, rightHeight) + 1;
     }
     
+    
+    pair<bool, int> fastIsBalanced(Node* root)
+    {
+        if(root == NULL)
+        {
+            pair<bool, int> p = make_pair(true, 0);
+            return p;
+        }
+        
+        pair<bool, int>leftAns = fastIsBalanced(root->left);
+        pair<bool, int>rightAns = fastIsBalanced(root->right);
+        
+        bool left = leftAns.first;
+        bool right = rightAns.first;
+        
+        bool condition = abs(leftAns.second - rightAns.second) <= 1;
+        
+        if(left && right && condition)
+        {
+            pair<bool, int>ans;
+            ans.first = true;
+            ans.second = max(leftAns.second, rightAns.second) + 1;
+            
+            return ans;
+        }
+        else
+        {
+            pair<bool, int>ans;
+            ans.first = false;
+            return ans;
+        }
+    }
+    
     //Function to check whether a binary tree is balanced or not.
     bool isBalanced(Node *root)
     {
+        return fastIsBalanced(root).first;
+        
         //base condition 
-        if(root == NULL)
-            return true;
+        // if(root == NULL)
+        //     return true;
             
-        bool leftAns = isBalanced(root->left);
-        bool rightAns = isBalanced(root->right);
+        // bool leftAns = isBalanced(root->left);
+        // bool rightAns = isBalanced(root->right);
         
-        int leftHeight = height(root->left);
-        int rightHeight = height(root->right);
+        // int leftHeight = height(root->left);
+        // int rightHeight = height(root->right);
         
-        bool condition = abs(leftHeight - rightHeight) <= 1;
+        // bool condition = abs(leftHeight - rightHeight) <= 1;
         
-        if(leftAns && rightAns && condition)
-            return true;
-        else
-            return false;
+        // if(leftAns && rightAns && condition)
+        //     return true;
+        // else
+        //     return false;
     }
 };
 
