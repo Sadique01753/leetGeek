@@ -100,7 +100,6 @@ class Solution{
         }
         if(root->left == NULL && root->right == NULL)
         {
-            depth++;
             MinDepth = min(MinDepth, depth);
             return;
         }
@@ -121,7 +120,7 @@ class Solution{
         
         int MinDepth = INT_MAX;
         
-        findMinDepth(root, depth, MinDepth);
+        findMinDepth(root, depth+1, MinDepth);
         
         return MinDepth;
     }
