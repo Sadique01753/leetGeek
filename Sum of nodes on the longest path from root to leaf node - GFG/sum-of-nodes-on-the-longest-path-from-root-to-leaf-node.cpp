@@ -118,39 +118,29 @@ class Solution
 {
 public:
 
-    int height(Node* root)
+    void findSum(Node* root, int sum, int height, pair<int, int> &ans)
     {
         if(root == NULL)
-            return 0;
+            return;
             
-        int leftAns = height(root->left);
-        int rightAns = height(root->right);
-        
-        return max(leftAns, rightAns) + 1;
-    }
-
-    int findMaxSum(Node* root, int sum)
-    {
-        if(root == NULL)
-            return 0;
+        sum = sum + root->data;
             
         if(root->left == NULL && root->right == NULL)
         {
-            return root->data;
+            if(ans.first < height)
+            {
+                ans.first = height;
+                ans.second = sum;
+            }
+            else if(ans.first == height)
+                ans.second = max(ans.second, sum);
+                
+            return;
         }
-            
-        int leftSum = findMaxSum(root->left, sum);
-        int rightSum = findMaxSum(root->right, sum);
-            
-        int leftHeight = height(root->left);
-        int rightHeight = height(root->right);
         
-        if(leftHeight > rightHeight)
-            return root->data + leftSum;
-            
-        else
-            return root->data + rightSum;
         
+        findSum(root->left, sum, height+1, ans);
+        findSum(root->right, sum, height+1, ans);
     }
     
     int sumOfLongRootToLeafPath(Node *root)
@@ -158,11 +148,13 @@ public:
         if(root == NULL)
             return 0;
             
+        pair<int, int> ans=make_pair(0, 0);
         int sum = 0;
+        int height = 1;
         
-        int ans = findMaxSum(root, sum);
+        findSum(root, sum, height, ans);
         
-        return ans;
+        return ans.second;
     }
 };
 
