@@ -146,23 +146,37 @@ Node* newNode( int data )
 class Solution{
 public:
 
-    Node* createTree(Node* root, int arr[], int size, int &index)
-    {
-        if(root == NULL)
-        {
-            root = newNode(arr[index]);
-            index++;
-            return root;
-        }
+    // Node* createTree(Node* root, int arr[], int size, int &index)
+    // {
+    //     if(root == NULL)
+    //     {
+    //         root = newNode(arr[index]);
+    //         index++;
+    //         return root;
+    //     }
         
-        if(root->data > arr[index])
-        {
-            root->left = createTree(root->left, arr, size, index);
-        }
-        else if(root->data < arr[index])
-        {
-            root->right = createTree(root->right, arr, size, index);
-        }
+    //     if(root->data > arr[index])
+    //     {
+    //         root->left = createTree(root->left, arr, size, index);
+    //     }
+    //     else if(root->data < arr[index])
+    //     {
+    //         root->right = createTree(root->right, arr, size, index);
+    //     }
+    //     return root;
+    // }
+    
+    Node* createTree(int arr[], int size, int &index, int min, int max)
+    {
+        if(index >= size || arr[index] < min || arr[index] > max)
+            return NULL;
+            
+        Node* root = newNode(arr[index]);
+        index++;
+        
+        root->left = createTree(arr, size, index, min, root->data);
+        root->right = createTree(arr, size, index, root->data, max);
+        
         return root;
     }
 
@@ -173,10 +187,11 @@ public:
         if(size == 0)
             return root;
             
+        int min = INT_MIN;
+        int max = INT_MAX;
         int index = 0;
         
-        while(index < size)   
-            root = createTree(root, pre, size, index);
+        root = createTree(pre, size, index, min, max);
         
         return root;
     }
